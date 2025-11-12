@@ -175,6 +175,12 @@
                           </div>
                           <div class="order-field-grid">
                             <div class="order-field">
+                              <p class="order-field-label">Product Name</p>
+                              <div class="input-field order-input" data-order-field="product-name">
+                                <span class="typing-text" data-full-text="Spring '26 Hoodie"></span>
+                              </div>
+                            </div>
+                            <div class="order-field">
                               <p class="order-field-label">Quantity</p>
                               <div class="input-field order-input" data-order-field="quantity">
                                 <span class="typing-text" data-full-text="25,000"></span>
@@ -188,26 +194,33 @@
                               </div>
                             </div>
                             <div class="order-field">
-                              <p class="order-field-label">Target price</p>
+                              <p class="order-field-label">Target price (Optional)</p>
                               <div class="input-field order-input" data-order-field="price">
                                 <span class="typing-text" data-full-text="$12.50 / unit"></span>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div class="upload-card" role="group" aria-label="File upload">
-                          <div class="dropzone" data-upload-zone>
-                            <div class="file-chip" data-floating-file>
-                              <span class="file-icon" aria-hidden="true">📄</span>
-                              <span class="file-name">tech-pack.pdf</span>
+                          <div class="order-field order-field-full">
+                            <p class="order-field-label">Describe your product (Optional)</p>
+                            <div class="input-field order-input order-input-multiline" data-order-field="description">
+                              <span class="typing-text typing-text-multiline" data-full-text="Looking for a heavyweight cotton fleece, 320 gsm, with front chest embroidery and custom hangtags."></span>
                             </div>
-                            <strong class="upload-message" data-upload-message>Drag &amp; drop tech pack or CAD file</strong>
-                            <p class="upload-status" data-upload-status>Awaiting file</p>
-                            <ul class="feature-list">
-                              <li><span class="feature-check" aria-hidden="true">✓</span>Bill of Materials (BOM)</li>
-                              <li><span class="feature-check" aria-hidden="true">✓</span>Fabrics &amp; Materials</li>
-                            </ul>
                           </div>
+                          <div class="upload-section">
+                            <p class="order-field-label">Upload Files (Optional)</p>
+                            <div class="dropzone-compact" data-upload-zone>
+                              <div class="file-chip" data-floating-file>
+                                <span class="file-icon" aria-hidden="true">📄</span>
+                                <span class="file-name">tech-pack.pdf</span>
+                              </div>
+                              <span class="upload-message-compact" data-upload-message>Drag &amp; drop or click</span>
+                              <span class="upload-status-compact" data-upload-status></span>
+                            </div>
+                          </div>
+                          <button class="generate-brief-btn" data-generate-btn>
+                            <span class="btn-text">Generate AI Brief</span>
+                            <span class="btn-loader"></span>
+                          </button>
                         </div>
                       </div>
                       <div class="summary-card ai-brief-card">
@@ -240,7 +253,7 @@
                           <div class="ai-field" data-ai-field="packaging">
                             <small>Packaging</small>
                             <div class="ai-field-value">
-                              <strong class="ai-value" data-full-text="Fold &amp; polybag + RFID hangtag"></strong>
+                              <strong class="ai-value" data-full-text="Custom hangtags"></strong>
                             </div>
                           </div>
                         </div>

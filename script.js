@@ -41,16 +41,17 @@ class StepOneAutoDemo {
   constructor(root) {
     this.root = root;
     this.orderFields = {
+      'product-name': this.getOrderField('product-name'),
       quantity: this.getOrderField('quantity'),
       due: this.getOrderField('due'),
       price: this.getOrderField('price'),
+      description: this.getOrderField('description'),
     };
     this.dueChip = this.orderFields.due?.el.querySelector('[data-calendar-chip]') || null;
+    this.generateBtn = root.querySelector('[data-generate-btn]');
+    this.aiBriefCard = root.querySelector('.ai-brief-card');
     this.dropzone = root.querySelector('[data-upload-zone]');
-    this.uploadMessage = this.dropzone?.querySelector('[data-upload-message]') || null;
     this.uploadStatus = this.dropzone?.querySelector('[data-upload-status]') || null;
-    this.uploadMessageDefault = this.uploadMessage?.textContent.trim() || '';
-    this.uploadStatusDefault = this.uploadStatus?.textContent.trim() || '';
     this.aiFields = Array.from(root.querySelectorAll('[data-ai-field]')).map((field) => ({
       id: field.dataset.aiField,
       el: field,
@@ -147,7 +148,15 @@ class StepOneAutoDemo {
     if (!this.inView) return;
     await this.handleOrderInputs();
     if (!this.inView) return;
+    await this.wait(200);
+    if (!this.inView) return;
     await this.simulateUpload();
+    if (!this.inView) return;
+    await this.wait(150);
+    if (!this.inView) return;
+    await this.simulateButtonClick();
+    if (!this.inView) return;
+    await this.revealAiPanel();
     if (!this.inView) return;
     await this.runAiParse();
     if (!this.inView) return;
@@ -155,15 +164,23 @@ class StepOneAutoDemo {
   }
 
   async handleOrderInputs() {
-    await this.typeOrderField('quantity', 900);
+    await this.typeOrderField('product-name', 800);
     if (!this.inView) return;
-    await this.wait(150);
+    await this.wait(100);
+    if (!this.inView) return;
+    await this.typeOrderField('quantity', 600);
+    if (!this.inView) return;
+    await this.wait(100);
     if (!this.inView) return;
     await this.simulateDateSelection(1000);
     if (!this.inView) return;
-    await this.wait(150);
+    await this.wait(100);
     if (!this.inView) return;
-    await this.typeOrderField('price', 900);
+    await this.typeOrderField('price', 600);
+    if (!this.inView) return;
+    await this.wait(100);
+    if (!this.inView) return;
+    await this.typeOrderField('description', 1200);
   }
 
   async typeOrderField(key, duration = 900) {
@@ -213,27 +230,47 @@ class StepOneAutoDemo {
     if (this.dueChip) this.dueChip.classList.remove('is-active');
   }
 
-  async simulateUpload(duration = 1500) {
+  async simulateButtonClick(duration = 1000) {
+    if (!this.generateBtn) return;
+
+    this.generateBtn.classList.add('is-loading');
+    if (this.parseStatus) {
+      this.parseStatus.textContent = 'Parsing...';
+      this.parseStatus.classList.add('is-active');
+    }
+
+    await this.wait(duration);
+    if (!this.inView) return;
+
+    this.generateBtn.classList.remove('is-loading');
+  }
+
+  async revealAiPanel(duration = 500) {
+    if (!this.aiBriefCard) return;
+
+    this.aiBriefCard.classList.add('is-visible');
+    await this.wait(duration);
+  }
+
+  async simulateUpload(duration = 1000) {
     if (!this.dropzone) return;
     this.dropzone.classList.remove('is-uploading', 'is-complete');
     this.dropzone.classList.add('is-dragging');
-    this.setUploadStatus('tech-pack.pdf · dragging');
-    if (this.uploadMessage) this.uploadMessage.textContent = this.uploadMessageDefault;
+    this.setUploadStatus('Dragging...');
 
-    await this.wait(450);
+    await this.wait(300);
     if (!this.inView) return;
 
     this.dropzone.classList.remove('is-dragging');
     this.dropzone.classList.add('is-uploading');
-    this.setUploadStatus('Uploading… 68%');
+    this.setUploadStatus('Uploading...');
 
-    await this.wait(Math.max(duration - 600, 500));
+    await this.wait(Math.max(duration - 450, 350));
     if (!this.inView) return;
 
     this.dropzone.classList.remove('is-uploading');
     this.dropzone.classList.add('is-complete');
-    this.setUploadStatus('Upload complete · 100%');
-    if (this.uploadMessage) this.uploadMessage.textContent = 'tech-pack.pdf';
+    this.setUploadStatus('✓ Uploaded');
   }
 
   setUploadStatus(text) {
@@ -305,6 +342,8 @@ class StepOneAutoDemo {
   resetState() {
     this.resetOrderFields();
     this.resetUpload();
+    this.resetButton();
+    this.resetAiPanel();
     this.resetAiFields();
     this.resetScore();
     if (this.parseStatus) {
@@ -328,11 +367,20 @@ class StepOneAutoDemo {
     if (this.dropzone) {
       this.dropzone.classList.remove('is-dragging', 'is-uploading', 'is-complete');
     }
-    if (this.uploadMessage) {
-      this.uploadMessage.textContent = this.uploadMessageDefault;
-    }
     if (this.uploadStatus) {
-      this.uploadStatus.textContent = this.uploadStatusDefault;
+      this.uploadStatus.textContent = '';
+    }
+  }
+
+  resetButton() {
+    if (this.generateBtn) {
+      this.generateBtn.classList.remove('is-loading');
+    }
+  }
+
+  resetAiPanel() {
+    if (this.aiBriefCard) {
+      this.aiBriefCard.classList.remove('is-visible');
     }
   }
 
