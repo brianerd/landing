@@ -167,20 +167,41 @@
                     </div>
                     <div class="screen-grid screen-grid--dual">
                       <div class="intake-card">
-                        <div class="intake-fields">
-                          <label>Project name</label>
-                          <div class="input-field">Spring '26 Hoodie</div>
-                          <label>Due date</label>
-                          <div class="input-field with-icon">
-                            <span>May 18, 2025</span>
-                            <span class="calendar-chip">📅</span>
+                        <div class="order-details">
+                          <div class="order-details-head">
+                            <p class="order-eyebrow">Order details</p>
+                            <small>Provide key business inputs</small>
                           </div>
-                          <p class="field-helper">Project owner: Shuai Huang</p>
+                          <div class="order-field-grid">
+                            <div class="order-field">
+                              <p class="order-field-label">Quantity</p>
+                              <div class="input-field order-input" data-order-field="quantity">
+                                <span class="typing-text" data-full-text="25,000"></span>
+                              </div>
+                            </div>
+                            <div class="order-field">
+                              <p class="order-field-label">Due date</p>
+                              <div class="input-field order-input with-icon" data-order-field="due">
+                                <span class="typing-text" data-full-text="May 18, 2026"></span>
+                                <span class="calendar-chip" data-calendar-chip>📅</span>
+                              </div>
+                            </div>
+                            <div class="order-field">
+                              <p class="order-field-label">Target price</p>
+                              <div class="input-field order-input" data-order-field="price">
+                                <span class="typing-text" data-full-text="$12.50 / unit"></span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                         <div class="upload-card" role="group" aria-label="File upload">
-                          <div class="dropzone">
-                            <strong>Drag &amp; drop tech pack or CAD file</strong>
-                            <p>Our AI automatically detects:</p>
+                          <div class="dropzone" data-upload-zone>
+                            <div class="file-chip" data-floating-file>
+                              <span class="file-icon" aria-hidden="true">📄</span>
+                              <span class="file-name">tech-pack.pdf</span>
+                            </div>
+                            <strong class="upload-message" data-upload-message>Drag &amp; drop tech pack or CAD file</strong>
+                            <p class="upload-status" data-upload-status>Awaiting file</p>
                             <ul class="feature-list">
                               <li><span class="feature-check" aria-hidden="true">✓</span>Bill of Materials (BOM)</li>
                               <li><span class="feature-check" aria-hidden="true">✓</span>Fabrics &amp; Materials</li>
@@ -188,41 +209,50 @@
                           </div>
                         </div>
                       </div>
-                      <div class="summary-card">
-                        <div class="summary-label-row">
-                          <p class="summary-label">AI Brief Summary</p>
-                          <span class="summary-chip">Live parse</span>
+                      <div class="summary-card ai-brief-card">
+                        <div class="ai-brief-header">
+                          <div>
+                            <p class="summary-label">AI-Powered Brief</p>
+                            <span class="parse-status" data-parse-status>Awaiting upload</span>
+                          </div>
+                          <span class="summary-chip">Hybrid AI</span>
                         </div>
-                        <ul class="summary-checklist">
-                          <li>
-                            <span class="feature-check" aria-hidden="true">✓</span>
-                            <div>
-                              <small>Product</small>
-                              <strong>Hoodie</strong>
+                        <div class="ai-field-list">
+                          <div class="ai-field" data-ai-field="product">
+                            <small>Product type</small>
+                            <div class="ai-field-value">
+                              <strong class="ai-value" data-full-text="Hoodie"></strong>
                             </div>
-                          </li>
-                          <li>
-                            <span class="feature-check" aria-hidden="true">✓</span>
-                            <div>
-                              <small>Qty</small>
-                              <strong>25,000 units</strong>
+                          </div>
+                          <div class="ai-field" data-ai-field="material">
+                            <small>Material</small>
+                            <div class="ai-field-value">
+                              <strong class="ai-value" data-full-text="Cotton Fleece, 320 gsm"></strong>
                             </div>
-                          </li>
-                          <li>
-                            <span class="feature-check" aria-hidden="true">✓</span>
-                            <div>
-                              <small>Material</small>
-                              <strong>Cotton Fleece</strong>
+                          </div>
+                          <div class="ai-field" data-ai-field="logo">
+                            <small>Logo</small>
+                            <div class="ai-field-value">
+                              <strong class="ai-value" data-full-text="Embroidery, front chest"></strong>
                             </div>
-                          </li>
-                          <li>
-                            <span class="feature-check" aria-hidden="true">✓</span>
-                            <div>
-                              <small>Key tolerance</small>
-                              <strong>+ 0.5 mm</strong>
+                          </div>
+                          <div class="ai-field" data-ai-field="packaging">
+                            <small>Packaging</small>
+                            <div class="ai-field-value">
+                              <strong class="ai-value" data-full-text="Fold &amp; polybag + RFID hangtag"></strong>
                             </div>
-                          </li>
-                        </ul>
+                          </div>
+                        </div>
+                        <div class="ai-score">
+                          <div class="score-head">
+                            <p>Brief completeness</p>
+                            <strong data-score-output>0%</strong>
+                          </div>
+                          <div class="score-bar">
+                            <div class="score-fill" data-score-fill style="width: 0%"></div>
+                          </div>
+                          <p class="score-ready-text" data-score-ready>Ready for AI Matching</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -232,54 +262,151 @@
                         <p class="screen-kicker">Factory matching</p>
                         <h4>Vetted matches in 24 hrs</h4>
                       </div>
-                      <span class="badge">Filter: Mid-volume knit · USDA</span>
+                      <span class="badge">Filter: Apparel (Knit) · WRAP Certified</span>
                     </div>
-                    <div class="match-list">
-                      <article class="match-card">
-                        <div class="match-row">
-                          <div>
-                            <strong>Factory A-007</strong>
-                            <small>Ho Chi Minh City · Apparel</small>
-                          </div>
-                          <span class="score"><strong>92%</strong> match</span>
+                    <div class="match-layout">
+                      <section class="flag-panel" aria-label="Matched factory countries">
+                        <div class="panel-head">
+                          <p class="screen-kicker">Matched factory locations</p>
+                          <h5>Regional coverage &amp; density</h5>
                         </div>
-                        <ul>
-                          <li>Avg. lead time · 30 days</li>
-                          <li>Quality rating · 4.8/5</li>
-                          <li>Capacity · 50K units / month</li>
-                        </ul>
-                        <button class="ghost-btn">Request quote</button>
-                      </article>
-                      <article class="match-card">
-                        <div class="match-row">
-                          <div>
-                            <strong>Factory S-003</strong>
-                            <small>Pune · Precision steel</small>
-                          </div>
-                          <span class="score"><strong>89%</strong> match</span>
+                        <div class="flag-grid">
+                          <article class="flag-card active">
+                            <img class="flag-image" src="China.png" alt="China flag" />
+                            <div>
+                              <strong>China</strong>
+                              <p>24 vetted partners · Apparel &amp; knitwear</p>
+                            </div>
+                            <span class="flag-count">58%</span>
+                          </article>
+                          <article class="flag-card">
+                            <img class="flag-image" src="India.png" alt="India flag" />
+                            <div>
+                              <strong>India</strong>
+                              <p>18 vetted partners · Technical knits</p>
+                            </div>
+                            <span class="flag-count">27%</span>
+                          </article>
+                          <article class="flag-card">
+                            <img class="flag-image" src="Vietnam.png" alt="Vietnam flag" />
+                            <div>
+                              <strong>Vietnam</strong>
+                              <p>7 vetted partners · Performance apparel</p>
+                            </div>
+                            <span class="flag-count">10%</span>
+                          </article>
+                          <article class="flag-card">
+                            <img class="flag-image" src="Thailand.png" alt="Thailand flag" />
+                            <div>
+                              <strong>Thailand</strong>
+                              <p>5 vetted partners · Backup capacity</p>
+                            </div>
+                            <span class="flag-count">5%</span>
+                          </article>
                         </div>
-                        <ul>
-                          <li>Avg. lead time · 28 days</li>
-                          <li>Quality rating · 4.6/5</li>
-                          <li>Certifications · ISO 9001, ASME</li>
-                        </ul>
-                        <button class="ghost-btn">Request quote</button>
-                      </article>
-                      <article class="match-card">
-                        <div class="match-row">
-                          <div>
-                            <strong>Factory B-011</strong>
-                            <small>Guangdong · Technical knit</small>
+                      </section>
+                      <section class="comparison-panel" aria-label="Factory comparison list">
+                        <div class="selection-bar">
+                          <span class="selection-status">
+                            <span class="selection-icon">✓</span>
+                            2 factories selected
+                          </span>
+                          <div class="selection-actions">
+                            <button class="btn btn-solid btn-compact">Compare selected</button>
+                            <button class="btn btn-outline btn-compact">Request quotes</button>
                           </div>
-                          <span class="score"><strong>85%</strong> match</span>
                         </div>
-                        <ul>
-                          <li>Avg. lead time · 32 days</li>
-                          <li>Quality rating · 4.7/5</li>
-                          <li>On-time rate · 98%</li>
-                        </ul>
-                        <button class="ghost-btn">Request quote</button>
-                      </article>
+                        <div class="factory-scroll">
+                          <article class="factory-entry selected">
+                            <div class="factory-row">
+                              <label class="factory-checkbox">
+                                <input type="checkbox" checked aria-label="Select Factory A-007" />
+                                <span></span>
+                              </label>
+                              <div class="factory-meta">
+                                <strong>Factory A-007</strong>
+                                <p>Ho Chi Minh City, Vietnam · Apparel · Mid-volume knit</p>
+                                <small>Certifications: ISO 9001, WRAP</small>
+                              </div>
+                              <div class="factory-score">
+                                <strong>92%</strong>
+                                <span>Match</span>
+                              </div>
+                            </div>
+                            <div class="factory-metrics">
+                              <span>Avg. lead time · 30 days</span>
+                              <span>Quality rating · 4.8/5</span>
+                              <span>Capacity · 50K units / month</span>
+                            </div>
+                          </article>
+                          <article class="factory-entry selected">
+                            <div class="factory-row">
+                              <label class="factory-checkbox">
+                                <input type="checkbox" checked aria-label="Select Factory S-003" />
+                                <span></span>
+                              </label>
+                              <div class="factory-meta">
+                                <strong>Factory S-003</strong>
+                                <p>Pune, India · Precision steel fabrication</p>
+                                <small>Certifications: ISO 9001, ASME</small>
+                              </div>
+                              <div class="factory-score steel">
+                                <strong>89%</strong>
+                                <span>Match</span>
+                              </div>
+                            </div>
+                            <div class="factory-metrics">
+                              <span>Avg. lead time · 28 days</span>
+                              <span>Quality rating · 4.6/5</span>
+                              <span>Capacity · 40K units / month</span>
+                            </div>
+                          </article>
+                          <article class="factory-entry">
+                            <div class="factory-row">
+                              <label class="factory-checkbox">
+                                <input type="checkbox" aria-label="Select Factory B-011" />
+                                <span></span>
+                              </label>
+                              <div class="factory-meta">
+                                <strong>Factory B-011</strong>
+                                <p>Guangdong, China · Technical knitwear</p>
+                                <small>Certifications: ISO 9001, WRAP</small>
+                              </div>
+                              <div class="factory-score">
+                                <strong>85%</strong>
+                                <span>Match</span>
+                              </div>
+                            </div>
+                            <div class="factory-metrics">
+                              <span>Avg. lead time · 32 days</span>
+                              <span>Quality rating · 4.7/5</span>
+                              <span>On-time rate · 98%</span>
+                            </div>
+                          </article>
+                          <article class="factory-entry">
+                            <div class="factory-row">
+                              <label class="factory-checkbox">
+                                <input type="checkbox" aria-label="Select Factory K-214" />
+                                <span></span>
+                              </label>
+                              <div class="factory-meta">
+                                <strong>Factory K-214</strong>
+                                <p>Tiruppur, India · Apparel · Performance knit</p>
+                                <small>Certifications: ISO 14001, WRAP</small>
+                              </div>
+                              <div class="factory-score">
+                                <strong>83%</strong>
+                                <span>Match</span>
+                              </div>
+                            </div>
+                            <div class="factory-metrics">
+                              <span>Avg. lead time · 27 days</span>
+                              <span>Quality rating · 4.5/5</span>
+                              <span>Capacity · 35K units / month</span>
+                            </div>
+                          </article>
+                        </div>
+                      </section>
                     </div>
                   </div>
                   <div class="mockup-screen" data-step="step-3">
