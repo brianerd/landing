@@ -13,7 +13,7 @@
   --accent: #111111;
   --accent-light: #fef4e7;
   --gradient: linear-gradient(90deg, #ff6b42, #ffb347, #ff4dd6);
-  --mockup-min-height: clamp(420px, 55vh, 520px);
+  --mockup-min-height: clamp(470px, 58vh, 600px);
 }
 
 body {
@@ -321,69 +321,67 @@ section {
 .workflow-layout {
   margin-top: 2.5rem;
   display: grid;
-  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 3rem);
-  align-items: stretch;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: flex-start;
 }
 
 .workflow-copy {
-  position: sticky;
-  top: clamp(4rem, 8vh, 6.5rem);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  max-height: none;
-  overflow: visible;
-  padding-right: 0;
-  align-self: start;
+  gap: 1rem;
 }
 
 .step-card {
   text-align: left;
-  border: 1px solid var(--border);
-  border-radius: 26px;
-  background: #fff;
-  padding: 1.05rem 1.15rem;
+  border-radius: 36px;
+  padding: 1.25rem 1.4rem;
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
   cursor: pointer;
-  transition: border 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  border: 1.8px solid rgba(12, 28, 78, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(240, 244, 252, 0.9));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 18px 38px rgba(8, 13, 40, 0.08);
+  transition: border 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
 }
 
 .step-card .step-label {
   font-size: 0.75rem;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: rgba(17, 28, 66, 0.45);
   margin: 0;
 }
 
-.step-card small {
-  color: var(--muted);
-  font-weight: 500;
-  font-size: 0.82rem;
+.step-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(6, 11, 32, 0.5);
+}
+
+.step-card .step-body {
+  margin: 0;
+  font-size: 0.96rem;
+  line-height: 1.5;
+  color: rgba(6, 11, 32, 0.5);
 }
 
 .step-card.active {
-  border-color: #111;
-  box-shadow: 0 20px 50px rgba(6, 10, 40, 0.15);
-  transform: translateY(-2px);
+  background: #fff;
+  border-color: #1b66ff;
+  box-shadow: 0 25px 65px rgba(30, 88, 255, 0.3);
+  transform: translateY(-3px);
 }
 
-.workflow-copy .step-card h3 {
-  margin: 0;
-  font-size: 1rem;
+.step-card.active .step-label {
+  color: #1b66ff;
 }
 
-.workflow-copy .step-card p {
-  margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.45;
-}
-
-.workflow-copy .step-card small {
-  line-height: 1.35;
+.step-card.active h3,
+.step-card.active .step-body {
+  color: #060b20;
 }
 
 .workflow-visual {
@@ -411,35 +409,6 @@ section {
   border-radius: inherit;
   pointer-events: none;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-}
-
-.browser-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  padding: 0.3rem 1rem;
-  margin-bottom: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
-}
-
-.browser-bar .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-flex;
-}
-
-.browser-bar .dot.red {
-  background: #ff5f56;
-}
-.browser-bar .dot.yellow {
-  background: #ffbd2e;
-}
-.browser-bar .dot.green {
-  background: #27c93f;
 }
 
 .browser-body {
@@ -901,25 +870,6 @@ section {
   gap: 0.5rem;
 }
 
-.calendar-chip {
-  font-size: 1rem;
-  opacity: 0.7;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.6rem;
-  height: 1.6rem;
-  border-radius: 999px;
-  background: rgba(30, 62, 165, 0.08);
-  transition: transform 240ms ease, background 240ms ease, box-shadow 240ms ease;
-}
-
-.calendar-chip.is-active {
-  background: rgba(30, 62, 165, 0.2);
-  box-shadow: 0 6px 14px rgba(30, 62, 165, 0.25);
-  transform: translateY(-1px) scale(1.05);
-}
-
 .field-helper {
   margin: 0;
   color: var(--muted);
@@ -968,7 +918,7 @@ section {
 }
 
 .order-input {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   letter-spacing: -0.01em;
 }
 
@@ -2185,11 +2135,8 @@ section {
     grid-template-columns: 1fr;
   }
 
-  .workflow-copy {
-    position: static;
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
+  .workflow-visual {
+    margin-top: 2rem;
   }
 
   .browser-frame {
@@ -2204,6 +2151,10 @@ section {
 }
 
 @media (max-width: 640px) {
+  .workflow-layout {
+    gap: 1.5rem;
+  }
+
   .browser-body {
     flex-direction: column;
   }
@@ -2217,7 +2168,6 @@ section {
   .sidebar-nav {
     flex-direction: row;
   }
-}
 }
 
 .split-card.primary {
