@@ -405,7 +405,278 @@ class StepOneAutoDemo {
   }
 }
 
+class StepTwoAutoDemo {
+  constructor(root) {
+    this.root = root;
+    this.flagCards = Array.from(root.querySelectorAll('.flag-card'));
+    this.flagCounters = this.flagCards.map(card => ({
+      el: card,
+      counterEl: card.querySelector('.flag-count'),
+      targetValue: parseInt(card.querySelector('.flag-count')?.textContent) || 0,
+    }));
+    this.factoryEntries = Array.from(root.querySelectorAll('.factory-entry'));
+    this.factoryData = this.factoryEntries.map((entry, index) => ({
+      el: entry,
+      checkbox: entry.querySelector('input[type="checkbox"]'),
+      scoreEl: entry.querySelector('.factory-score strong'),
+      targetScore: parseInt(entry.querySelector('.factory-score strong')?.textContent) || 0,
+      aiHint: entry.querySelector('[data-ai-hint]'),
+      index,
+    }));
+    this.selectionBar = root.querySelector('.selection-bar');
+    this.quoteBtn = root.querySelector('[data-quote-btn]');
+    this.quoteCount = root.querySelector('[data-quote-count]');
+    this.selectionCount = root.querySelector('[data-selection-count]');
+    this.loopPause = 3000;
+    this.sequenceRunning = false;
+    this.inView = false;
+    this.prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (this.prefersReducedMotion) return;
+
+    this.root.classList.add('auto-demo');
+    this.resetState();
+
+    if ('IntersectionObserver' in window) {
+      this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+        threshold: 0.45,
+      });
+      this.observer.observe(this.root);
+    } else {
+      this.inView = true;
+      this.start();
+    }
+  }
+
+  handleIntersect(entries) {
+    const [entry] = entries;
+    if (!entry) return;
+    if (entry.isIntersecting) {
+      this.inView = true;
+      this.start();
+    } else {
+      this.inView = false;
+    }
+  }
+
+  start() {
+    if (this.sequenceRunning || !this.inView) return;
+    this.sequenceRunning = true;
+    this.runLoop();
+  }
+
+  async runLoop() {
+    this.resetState();
+    await this.wait(300);
+    if (!this.inView) {
+      this.sequenceRunning = false;
+      this.resetState();
+      return;
+    }
+
+    while (this.inView) {
+      await this.playOnce();
+      if (!this.inView) break;
+      await this.wait(this.loopPause);
+      if (!this.inView) break;
+      await this.fadeToInitial();
+    }
+
+    this.sequenceRunning = false;
+    if (!this.inView) {
+      this.resetState();
+    }
+  }
+
+  async fadeToInitial() {
+    this.root.classList.add('is-resetting');
+    await this.wait(420);
+    this.resetState();
+    this.root.classList.remove('is-resetting');
+    await this.wait(180);
+  }
+
+  async playOnce() {
+    // Step A: Animate Regional Data (1s)
+    if (!this.inView) return;
+    await this.animateRegionalData();
+    if (!this.inView) return;
+    await this.wait(300);
+
+    // Step B: Reveal Factory Cards (2s)
+    if (!this.inView) return;
+    await this.revealFactoryCards();
+    if (!this.inView) return;
+    await this.wait(300);
+
+    // Step C: Reveal AI Hints (1s)
+    if (!this.inView) return;
+    await this.revealAiHints();
+    if (!this.inView) return;
+    await this.wait(300);
+
+    // Step D: Simulate Selection (1s)
+    if (!this.inView) return;
+    await this.simulateSelection();
+  }
+
+  async animateRegionalData() {
+    const duration = 1000;
+    const steps = 30;
+    const stepDuration = duration / steps;
+
+    this.flagCounters.forEach(({ el }) => {
+      el.classList.add('is-animating');
+    });
+
+    for (let i = 1; i <= steps; i += 1) {
+      if (!this.inView) return;
+      this.flagCounters.forEach(({ counterEl, targetValue }) => {
+        if (!counterEl) return;
+        const value = Math.round((targetValue / steps) * i);
+        counterEl.textContent = `${value}%`;
+      });
+      await this.wait(stepDuration);
+    }
+
+    this.flagCounters.forEach(({ counterEl, targetValue, el }) => {
+      if (counterEl) counterEl.textContent = `${targetValue}%`;
+      el.classList.remove('is-animating');
+      el.classList.add('animation-complete');
+    });
+  }
+
+  async revealFactoryCards() {
+    const cardDelay = 600;
+    const countDuration = 1000;
+
+    for (const factory of this.factoryData) {
+      if (!this.inView) return;
+
+      factory.el.classList.add('is-revealing');
+      await this.animateFactoryScore(factory, countDuration);
+      factory.el.classList.remove('is-revealing');
+      factory.el.classList.add('is-visible');
+
+      await this.wait(cardDelay);
+    }
+  }
+
+  async revealAiHints() {
+    const hintDelay = 400;
+
+    for (const factory of this.factoryData) {
+      if (!this.inView) return;
+      if (!factory.aiHint) continue;
+
+      factory.aiHint.classList.add('is-revealing');
+      await this.wait(hintDelay);
+      factory.aiHint.classList.remove('is-revealing');
+      factory.aiHint.classList.add('is-visible');
+
+      // Add special border styling for top match
+      if (factory.aiHint.dataset.aiHint === 'top') {
+        factory.el.classList.add('has-top-match');
+      }
+    }
+  }
+
+  async animateFactoryScore(factory, duration) {
+    if (!factory.scoreEl) return;
+
+    const steps = 25;
+    const stepDuration = duration / steps;
+
+    for (let i = 1; i <= steps; i += 1) {
+      if (!this.inView) return;
+      const value = Math.round((factory.targetScore / steps) * i);
+      factory.scoreEl.textContent = `${value}%`;
+      await this.wait(stepDuration);
+    }
+
+    factory.scoreEl.textContent = `${factory.targetScore}%`;
+  }
+
+  async simulateSelection() {
+    const selectDelay = 400;
+
+    // Select only first factory (Factory A-007)
+    if (!this.inView) return;
+    const factory = this.factoryData[0];
+    if (!factory) return;
+
+    factory.el.classList.add('is-selecting');
+    await this.wait(300);
+
+    if (factory.checkbox) {
+      factory.checkbox.checked = true;
+    }
+    factory.el.classList.add('selected');
+    factory.el.classList.remove('is-selecting');
+
+    await this.wait(selectDelay);
+
+    // Activate button and update counts
+    if (!this.inView) return;
+    if (this.selectionBar) {
+      this.selectionBar.classList.add('is-active');
+    }
+    if (this.quoteBtn) {
+      this.quoteBtn.classList.add('is-active');
+    }
+    if (this.quoteCount) {
+      this.quoteCount.textContent = '1';
+    }
+    if (this.selectionCount) {
+      this.selectionCount.textContent = '1';
+    }
+  }
+
+  resetState() {
+    // Reset flag counters
+    this.flagCounters.forEach(({ el, counterEl }) => {
+      el.classList.remove('is-animating', 'animation-complete');
+      if (counterEl) counterEl.textContent = '0%';
+    });
+
+    // Reset factory cards
+    this.factoryData.forEach(({ el, checkbox, scoreEl, aiHint }) => {
+      el.classList.remove('is-revealing', 'is-visible', 'selected', 'is-selecting', 'has-top-match');
+      if (checkbox) checkbox.checked = false;
+      if (scoreEl) scoreEl.textContent = '0%';
+      if (aiHint) {
+        aiHint.classList.remove('is-revealing', 'is-visible');
+      }
+    });
+
+    // Reset buttons and counts
+    if (this.selectionBar) {
+      this.selectionBar.classList.remove('is-active');
+    }
+    if (this.quoteBtn) {
+      this.quoteBtn.classList.remove('is-active');
+    }
+    if (this.quoteCount) {
+      this.quoteCount.textContent = '0';
+    }
+    if (this.selectionCount) {
+      this.selectionCount.textContent = '0';
+    }
+  }
+
+  wait(duration) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, duration);
+    });
+  }
+}
+
 const stepOneScreen = document.querySelector('.mockup-screen[data-step="step-1"]');
 if (stepOneScreen) {
   new StepOneAutoDemo(stepOneScreen);
+}
+
+const stepTwoScreen = document.querySelector('.mockup-screen[data-step="step-2"]');
+if (stepTwoScreen) {
+  new StepTwoAutoDemo(stepTwoScreen);
 }

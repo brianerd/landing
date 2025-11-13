@@ -275,8 +275,8 @@
                       <div>
                         <p class="screen-kicker">Factory matching</p>
                         <h4>Vetted matches in 24 hrs</h4>
+                        <p class="order-context">For: <strong>Spring '26 Hoodie</strong> · 25,000 units · Due May 18, 2026</p>
                       </div>
-                      <span class="badge">Filter: Apparel (Knit) · WRAP Certified</span>
                     </div>
                     <div class="match-layout">
                       <section class="flag-panel" aria-label="Matched factory countries">
@@ -286,34 +286,34 @@
                         </div>
                         <div class="flag-grid">
                           <article class="flag-card active">
-                            <img class="flag-image" src="China.png" alt="China flag" />
+                            <img class="flag-image" src="Pictures/China.png" alt="China flag" />
                             <div>
                               <strong>China</strong>
-                              <p>24 vetted partners · Apparel &amp; knitwear</p>
+                              <p>24 vetted partners</p>
                             </div>
                             <span class="flag-count">58%</span>
                           </article>
                           <article class="flag-card">
-                            <img class="flag-image" src="India.png" alt="India flag" />
+                            <img class="flag-image" src="Pictures/India.png" alt="India flag" />
                             <div>
                               <strong>India</strong>
-                              <p>18 vetted partners · Technical knits</p>
+                              <p>18 vetted partners</p>
                             </div>
                             <span class="flag-count">27%</span>
                           </article>
                           <article class="flag-card">
-                            <img class="flag-image" src="Vietnam.png" alt="Vietnam flag" />
+                            <img class="flag-image" src="Pictures/Vietnam.png" alt="Vietnam flag" />
                             <div>
                               <strong>Vietnam</strong>
-                              <p>7 vetted partners · Performance apparel</p>
+                              <p>7 vetted partners</p>
                             </div>
                             <span class="flag-count">10%</span>
                           </article>
                           <article class="flag-card">
-                            <img class="flag-image" src="Thailand.png" alt="Thailand flag" />
+                            <img class="flag-image" src="Pictures/Thailand.png" alt="Thailand flag" />
                             <div>
                               <strong>Thailand</strong>
-                              <p>5 vetted partners · Backup capacity</p>
+                              <p>5 vetted partners</p>
                             </div>
                             <span class="flag-count">5%</span>
                           </article>
@@ -323,18 +323,18 @@
                         <div class="selection-bar">
                           <span class="selection-status">
                             <span class="selection-icon">✓</span>
-                            2 factories selected
+                            <span class="selection-text"><span class="selection-number" data-selection-count>0</span> selected</span>
                           </span>
                           <div class="selection-actions">
-                            <button class="btn btn-solid btn-compact">Compare selected</button>
-                            <button class="btn btn-outline btn-compact">Request quotes</button>
+                            <button class="btn btn-outline btn-compact" data-quote-btn>Request Quotes&nbsp;(<span data-quote-count>0</span>)</button>
                           </div>
                         </div>
                         <div class="factory-scroll">
-                          <article class="factory-entry selected">
+                          <article class="factory-entry">
+                            <span class="ai-hint ai-hint-top" data-ai-hint="top">✨ Top Match</span>
                             <div class="factory-row">
                               <label class="factory-checkbox">
-                                <input type="checkbox" checked aria-label="Select Factory A-007" />
+                                <input type="checkbox" aria-label="Select Factory A-007" />
                                 <span></span>
                               </label>
                               <div class="factory-meta">
@@ -342,7 +342,7 @@
                                 <p>Ho Chi Minh City, Vietnam · Apparel · Mid-volume knit</p>
                                 <small>Certifications: ISO 9001, WRAP</small>
                               </div>
-                              <div class="factory-score">
+                              <div class="factory-score score-high">
                                 <strong>92%</strong>
                                 <span>Match</span>
                               </div>
@@ -353,41 +353,20 @@
                               <span>Capacity · 50K units / month</span>
                             </div>
                           </article>
-                          <article class="factory-entry selected">
-                            <div class="factory-row">
-                              <label class="factory-checkbox">
-                                <input type="checkbox" checked aria-label="Select Factory S-003" />
-                                <span></span>
-                              </label>
-                              <div class="factory-meta">
-                                <strong>Factory S-003</strong>
-                                <p>Pune, India · Precision steel fabrication</p>
-                                <small>Certifications: ISO 9001, ASME</small>
-                              </div>
-                              <div class="factory-score steel">
-                                <strong>89%</strong>
-                                <span>Match</span>
-                              </div>
-                            </div>
-                            <div class="factory-metrics">
-                              <span>Avg. lead time · 28 days</span>
-                              <span>Quality rating · 4.6/5</span>
-                              <span>Capacity · 40K units / month</span>
-                            </div>
-                          </article>
                           <article class="factory-entry">
+                            <span class="ai-hint ai-hint-warning" data-ai-hint="warning">⚠️ High Tariff Risk</span>
                             <div class="factory-row">
                               <label class="factory-checkbox">
-                                <input type="checkbox" aria-label="Select Factory B-011" />
+                                <input type="checkbox" aria-label="Select Factory B-012" />
                                 <span></span>
                               </label>
                               <div class="factory-meta">
-                                <strong>Factory B-011</strong>
+                                <strong>Factory B-012</strong>
                                 <p>Guangdong, China · Technical knitwear</p>
                                 <small>Certifications: ISO 9001, WRAP</small>
                               </div>
-                              <div class="factory-score">
-                                <strong>85%</strong>
+                              <div class="factory-score score-medium">
+                                <strong>89%</strong>
                                 <span>Match</span>
                               </div>
                             </div>
@@ -397,29 +376,11 @@
                               <span>On-time rate · 98%</span>
                             </div>
                           </article>
-                          <article class="factory-entry">
-                            <div class="factory-row">
-                              <label class="factory-checkbox">
-                                <input type="checkbox" aria-label="Select Factory K-214" />
-                                <span></span>
-                              </label>
-                              <div class="factory-meta">
-                                <strong>Factory K-214</strong>
-                                <p>Tiruppur, India · Apparel · Performance knit</p>
-                                <small>Certifications: ISO 14001, WRAP</small>
-                              </div>
-                              <div class="factory-score">
-                                <strong>83%</strong>
-                                <span>Match</span>
-                              </div>
-                            </div>
-                            <div class="factory-metrics">
-                              <span>Avg. lead time · 27 days</span>
-                              <span>Quality rating · 4.5/5</span>
-                              <span>Capacity · 35K units / month</span>
-                            </div>
-                          </article>
                         </div>
+                        <button class="btn-ai-compare" data-ai-compare>
+                          <span class="ai-sparkle">✨</span>
+                          Ask AI to compare factories
+                        </button>
                       </section>
                     </div>
                   </div>
