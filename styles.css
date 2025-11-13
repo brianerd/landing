@@ -478,6 +478,7 @@ section {
   pointer-events: none;
   transform: translateY(10px);
   transition: opacity 0.35s ease, transform 0.35s ease;
+  background: #fff;
 }
 
 .mockup-screen::-webkit-scrollbar {
@@ -2412,10 +2413,13 @@ textarea {
   gap: 1rem;
 }
 
+.mockup-screen[data-step="step-4"] .metric-grid {
+  margin-bottom: 5rem;
+}
+
 .mockup-screen[data-step="step-4"] {
   position: relative;
   overflow: visible;
-  padding-bottom: 5.5rem;
 }
 
 /* Bottom Alert Bar */
