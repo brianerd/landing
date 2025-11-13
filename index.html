@@ -438,74 +438,113 @@
                     </div>
                   </div>
                   <div class="mockup-screen" data-step="step-4">
-                    <div class="screen-head">
+                    <div class="screen-head step-four-head">
                       <div>
-                        <p class="screen-kicker">AI risk controls</p>
+                        <p class="screen-kicker">Live production</p>
                         <h4>Project: Spring '26 Hoodie</h4>
+                        <small>Factory A-007 · Line 3</small>
                       </div>
-                      <span class="badge badge-warning">Needs action</span>
+                      <span class="status-chip status-positive" data-step4-status>On track</span>
                     </div>
-                    <div class="ai-alert">
-                      <div>
-                        <p>🚨 <strong>AI delay forecast:</strong> 2-day delay detected at Factory A.</p>
-                        <small>Cause: Sewing queue saturation · Confidence 87%</small>
-                      </div>
-                      <div class="alert-actions">
-                        <button class="btn-mini primary">Auto-route 20% to Factory B</button>
-                        <button class="btn-mini ghost">Ignore alert</button>
-                      </div>
-                    </div>
-                    <div class="milestone-track">
-                      <div class="milestone complete">
-                        <span>✓</span>
-                        Knitting
-                      </div>
-                      <div class="milestone active warning">
-                        <span>!</span>
-                        Cut &amp; sew
-                      </div>
-                      <div class="milestone pending">QC</div>
-                      <div class="milestone pending">Pack</div>
-                    </div>
-                    <div class="screen-grid">
-                      <div class="qc-card">
+                    <div class="step-four-grid">
+                      <section class="production-card">
+                        <div class="production-meta">
+                          <span class="production-label">Stage status</span>
+                          <strong data-step4-stage>Sewing in progress</strong>
+                        </div>
+                        <div class="timeline-bar" role="img" aria-label="Production progress">
+                          <div class="timeline-fill" data-step4-progress style="width: 40%"></div>
+                        </div>
+                        <div class="timeline-stats">
+                          <span class="timeline-current">40%</span>
+                        </div>
+                        <div class="milestone-row">
+                          <span class="milestone-chip is-complete">Cutting</span>
+                          <span class="milestone-chip is-active">Sewing</span>
+                          <span class="milestone-chip is-pending">QC</span>
+                          <span class="milestone-chip is-pending">Finishing</span>
+                        </div>
+                      </section>
+                      <aside class="qc-panel">
                         <header>
-                          <h5>Live QC photos</h5>
-                          <small>Line 2</small>
+                          <h5>QC feed</h5>
+                          <small>Live floor uploads</small>
                         </header>
-                        <div class="qc-photos">
-                          <figure>
-                            <div class="qc-thumb"></div>
-                            <figcaption>Needle feed · 09:02</figcaption>
-                          </figure>
-                          <figure>
-                            <div class="qc-thumb"></div>
-                            <figcaption>Panel QC · 08:58</figcaption>
-                          </figure>
+                        <div class="qc-feed">
+                          <article class="qc-entry is-visible">
+                            <div class="qc-photo" style="--qc-gradient: linear-gradient(135deg, rgba(110, 167, 255, 0.35), rgba(60, 107, 255, 0.6))"></div>
+                            <div>
+                              <h6>Panel cutting - 08:15</h6>
+                              <p>Batch 12 · Floor cam</p>
+                            </div>
+                          </article>
+                          <article class="qc-entry is-visible">
+                            <div class="qc-photo" style="--qc-gradient: linear-gradient(135deg, rgba(72, 214, 173, 0.35), rgba(23, 132, 87, 0.65))"></div>
+                            <div>
+                              <h6>Collar stitching - 10:30</h6>
+                              <p>Needle tension check</p>
+                            </div>
+                          </article>
+                        </div>
+                      </aside>
+                    </div>
+                    <div class="metric-grid">
+                      <article class="metric-card">
+                        <span>Units complete</span>
+                        <strong>8,100 / 25,000</strong>
+                      </article>
+                      <article class="metric-card">
+                        <span>On-time confidence</span>
+                        <strong class="metric-positive" data-step4-confidence>98%</strong>
+                      </article>
+                      <article class="metric-card">
+                        <span>Shift</span>
+                        <strong>Line 3 · Running</strong>
+                      </article>
+                    </div>
+
+                    <!-- Bottom Alert Bar -->
+                    <div class="bottom-alert-bar" data-alert-bar>
+                      <div class="alert-bar-content">
+                        <span class="alert-icon">⚠️</span>
+                        <div class="alert-text">
+                          <strong data-alert-title>AI-DE-RISK ACTIVATED:</strong>
+                          <span data-alert-message>Sewing phase 22% behind schedule.</span>
                         </div>
                       </div>
-                      <div class="map-card">
-                        <header>
-                          <h5>Factory A location</h5>
-                          <small>Line 3 capacity</small>
-                        </header>
-                        <div class="map-visual muted">
-                          <span class="ping warning"></span>
+                      <button class="btn-alert-action" data-alert-button>View AI Solution</button>
+                    </div>
+
+                    <!-- Side Solution Panel -->
+                    <div class="side-solution-panel" data-solution-panel>
+                      <div class="solution-header">
+                        <h5>AI Recommended Action</h5>
+                        <p class="solution-subtitle">Automated analysis based on capacity data</p>
+                      </div>
+                      <div class="solution-body">
+                        <div class="solution-info">
+                          <p><strong>Issue:</strong> Sewing phase 22% behind schedule</p>
+                          <p><strong>Risk:</strong> 2-day delay projected</p>
+                          <p><strong>Solution:</strong> Reroute 20% of production to Factory B-012 (Thailand)</p>
                         </div>
-                        <ul class="stat-list">
-                          <li>
-                            <span>Throughput forecast</span>
-                            <strong>-2d vs plan</strong>
-                          </li>
-                          <li>
-                            <span>Backup ready</span>
-                            <strong>Factory B (Thailand)</strong>
-                          </li>
-                          <li>
-                            <span>Auto-route cap</span>
-                            <strong>20% · 4,800 units</strong>
-                          </li>
-                        </ul>
+                        <div class="solution-stats">
+                          <div class="stat-item">
+                            <span>Units to reroute</span>
+                            <strong>5,000 units</strong>
+                          </div>
+                          <div class="stat-item">
+                            <span>Recovery time</span>
+                            <strong>+1.5 days earlier</strong>
+                          </div>
+                          <div class="stat-item">
+                            <span>Added cost</span>
+                            <strong>+$0.80/unit</strong>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="solution-actions">
+                        <button class="btn-solution-primary" data-approve-btn>Approve Reroute</button>
+                        <button class="btn-solution-secondary">Renegotiate with Factory A</button>
                       </div>
                     </div>
                   </div>
