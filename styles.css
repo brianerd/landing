@@ -791,8 +791,15 @@ section {
   width: 60px;
   height: 60px;
   border-radius: 14px;
-  background: var(--qc-gradient, linear-gradient(135deg, rgba(92, 139, 255, 0.2), rgba(30, 62, 165, 0.35)));
+  background-image: var(--qc-gradient, linear-gradient(135deg, rgba(92, 139, 255, 0.2), rgba(30, 62, 165, 0.35)));
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   flex-shrink: 0;
+}
+
+.qc-photo.has-photo {
+  background-image: var(--qc-image);
 }
 
 .qc-entry h6 {

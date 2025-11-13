@@ -831,7 +831,7 @@ class StepThreeAutoDemo {
         {
           title: 'Panel cutting - 08:15',
           detail: 'Batch 12 · Floor cam',
-          gradient: 'linear-gradient(135deg, rgba(110, 167, 255, 0.35), rgba(60, 107, 255, 0.6))',
+          photo: 'Pictures/panel_cutting.webp',
         },
         900,
         currentRunId
@@ -859,7 +859,7 @@ class StepThreeAutoDemo {
         {
           title: 'Collar stitching - 10:30',
           detail: 'Needle tension check',
-          gradient: 'linear-gradient(135deg, rgba(72, 214, 173, 0.35), rgba(23, 132, 87, 0.65))',
+          photo: 'Pictures/collar_sewing.jpg',
         },
         1000,
         currentRunId
@@ -891,7 +891,7 @@ class StepThreeAutoDemo {
     this.addQcCard(card);
   }
 
-  addQcCard({ title, detail, gradient }) {
+  addQcCard({ title, detail, gradient, photo }) {
     if (!this.qcFeed) return;
 
     if (this.qcEmpty) {
@@ -901,10 +901,13 @@ class StepThreeAutoDemo {
     const entry = document.createElement('article');
     entry.className = 'qc-entry';
 
-    const photo = document.createElement('div');
-    photo.className = 'qc-photo';
-    if (gradient) {
-      photo.style.setProperty('--qc-gradient', gradient);
+    const photoEl = document.createElement('div');
+    photoEl.className = 'qc-photo';
+    if (photo) {
+      photoEl.classList.add('has-photo');
+      photoEl.style.setProperty('--qc-image', `url('${photo}')`);
+    } else if (gradient) {
+      photoEl.style.setProperty('--qc-gradient', gradient);
     }
 
     const copy = document.createElement('div');
@@ -916,7 +919,7 @@ class StepThreeAutoDemo {
     copy.appendChild(heading);
     copy.appendChild(detailEl);
 
-    entry.appendChild(photo);
+    entry.appendChild(photoEl);
     entry.appendChild(copy);
 
     this.qcFeed.appendChild(entry);
