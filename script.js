@@ -1020,6 +1020,308 @@ class StepThreeAutoDemo {
   }
 }
 
+class StepFourAutoDemo {
+  constructor(root) {
+    this.root = root;
+    this.statusChip = root.querySelector('[data-step4-status]');
+    this.confidenceEl = root.querySelector('[data-step4-confidence]');
+    this.alertBar = root.querySelector('[data-alert-bar]');
+    this.alertButton = root.querySelector('[data-alert-button]');
+    this.alertTitle = root.querySelector('[data-alert-title]');
+    this.alertMessage = root.querySelector('[data-alert-message]');
+    this.alertIcon = this.alertBar?.querySelector('.alert-icon');
+    this.solutionPanel = root.querySelector('[data-solution-panel]');
+    this.approveBtn = root.querySelector('[data-approve-btn]');
+
+    this.sequenceRunning = false;
+    this.inView = false;
+    this.runId = 0;
+    this.holdDuration = 4000;
+    this.prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (this.prefersReducedMotion) return;
+
+    this.root.classList.add('auto-demo');
+    this.resetState();
+
+    if ('IntersectionObserver' in window) {
+      this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+        threshold: 0.45,
+      });
+      this.observer.observe(this.root);
+    } else {
+      this.inView = true;
+      this.start();
+    }
+  }
+
+  handleIntersect(entries) {
+    const [entry] = entries;
+    if (!entry) return;
+    if (entry.isIntersecting) {
+      this.inView = true;
+      this.start();
+    } else {
+      this.inView = false;
+    }
+  }
+
+  start() {
+    if (this.sequenceRunning || !this.inView) return;
+    this.sequenceRunning = true;
+    this.runLoop();
+  }
+
+  async restart() {
+    this.runId += 1;
+    this.inView = false;
+    this.sequenceRunning = false;
+    this.root.classList.add('is-resetting');
+    this.resetState();
+    await this.wait(50);
+    this.root.classList.remove('is-resetting');
+    await this.wait(50);
+    this.inView = true;
+    this.start();
+  }
+
+  async runLoop() {
+    const currentRunId = this.runId;
+    this.resetState();
+    await this.wait(300);
+    if (!this.inView || this.runId !== currentRunId) {
+      this.sequenceRunning = false;
+      return;
+    }
+
+    while (this.inView && this.runId === currentRunId) {
+      await this.playOnce(currentRunId);
+      if (!this.inView || this.runId !== currentRunId) break;
+    }
+
+    this.sequenceRunning = false;
+  }
+
+  async playOnce(currentRunId) {
+    // Initial happy state (1s)
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(1000);
+
+    // Step A: THE PROBLEM (1.5s)
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.showProblem(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(300);
+
+    // Step B: THE TRIAGE ALERT (1s)
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.showTriageAlert();
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(1000);
+
+    // Step C: ACTION 1 - Click "View AI Solution" (1s)
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.clickAlertButton();
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(400);
+
+    // Step D: THE SOLUTION PANEL (1.5s)
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.showSolutionPanel();
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(1500);
+
+    // Step E: ACTION 2 - Click "Approve Reroute" (1s)
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.clickApproveButton();
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(600);
+
+    // Step F: THE RESOLUTION (2s)
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.showResolution(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
+
+    // Hold on recovered state (4s)
+    await this.wait(this.holdDuration);
+    if (!this.inView || this.runId !== currentRunId) return;
+
+    // Reset and loop
+    await this.fadeToInitial();
+  }
+
+  async showProblem(currentRunId) {
+    // Flash status chip to red
+    if (this.statusChip) {
+      this.statusChip.textContent = '⚠️ Delay Detected';
+      this.statusChip.classList.remove('status-positive');
+      this.statusChip.classList.add('status-danger');
+    }
+
+    // Animate confidence dropping from 98% to 55%
+    await this.animateConfidence(98, 55, 1200, currentRunId);
+  }
+
+  async showTriageAlert() {
+    // Slide up the alert bar
+    if (this.alertBar) {
+      this.alertBar.classList.add('is-visible');
+    }
+  }
+
+  async clickAlertButton() {
+    // Flash the "View AI Solution" button
+    if (this.alertButton) {
+      this.alertButton.classList.add('is-clicked');
+      await this.wait(600);
+      this.alertButton.classList.remove('is-clicked');
+    }
+  }
+
+  async showSolutionPanel() {
+    // Slide in the solution panel from right
+    if (this.solutionPanel) {
+      this.solutionPanel.classList.add('is-visible');
+    }
+  }
+
+  async clickApproveButton() {
+    // Flash the "Approve Reroute" button
+    if (this.approveBtn) {
+      this.approveBtn.classList.add('is-clicked');
+      await this.wait(600);
+      this.approveBtn.classList.remove('is-clicked');
+    }
+  }
+
+  async showResolution(currentRunId) {
+    // Hide solution panel
+    if (this.solutionPanel) {
+      this.solutionPanel.classList.remove('is-visible');
+    }
+    await this.wait(300);
+
+    // Change alert bar to green "Solution Active"
+    if (this.alertBar) {
+      this.alertBar.classList.add('is-resolved');
+    }
+    if (this.alertIcon) {
+      this.alertIcon.textContent = '✅';
+    }
+    if (this.alertTitle) {
+      this.alertTitle.textContent = 'SOLUTION ACTIVE:';
+    }
+    if (this.alertMessage) {
+      this.alertMessage.textContent = 'Reroute approved. Production rebalancing in progress.';
+    }
+
+    // Change status back to "On track"
+    if (this.statusChip) {
+      this.statusChip.textContent = '✅ On track';
+      this.statusChip.classList.remove('status-danger');
+      this.statusChip.classList.add('status-positive');
+    }
+
+    // Animate confidence climbing from 55% to 96%
+    await this.animateConfidence(55, 96, 1500, currentRunId);
+  }
+
+  async animateConfidence(start, end, duration, currentRunId) {
+    if (!this.confidenceEl) return Promise.resolve();
+
+    return new Promise((resolve) => {
+      const startTime = performance.now();
+
+      // Update color class based on confidence level
+      const updateColorClass = (value) => {
+        this.confidenceEl.classList.remove('metric-positive', 'metric-danger');
+        if (value >= 80) {
+          this.confidenceEl.classList.add('metric-positive');
+        } else {
+          this.confidenceEl.classList.add('metric-danger');
+        }
+      };
+
+      const frame = (now) => {
+        if (!this.inView || this.runId !== currentRunId) {
+          resolve();
+          return;
+        }
+        const progress = Math.min((now - startTime) / duration, 1);
+        const value = start + (end - start) * progress;
+        const rounded = Math.round(value);
+
+        this.confidenceEl.textContent = `${rounded}%`;
+        updateColorClass(rounded);
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          resolve();
+        }
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+
+  async fadeToInitial() {
+    this.root.classList.add('is-resetting');
+    await this.wait(420);
+    this.resetState();
+    this.root.classList.remove('is-resetting');
+    await this.wait(180);
+  }
+
+  resetState() {
+    // Reset status chip
+    if (this.statusChip) {
+      this.statusChip.textContent = 'On track';
+      this.statusChip.classList.remove('status-danger');
+      this.statusChip.classList.add('status-positive');
+    }
+
+    // Reset confidence
+    if (this.confidenceEl) {
+      this.confidenceEl.textContent = '98%';
+      this.confidenceEl.classList.remove('metric-danger');
+      this.confidenceEl.classList.add('metric-positive');
+    }
+
+    // Reset alert bar
+    if (this.alertBar) {
+      this.alertBar.classList.remove('is-visible', 'is-resolved');
+    }
+    if (this.alertIcon) {
+      this.alertIcon.textContent = '⚠️';
+    }
+    if (this.alertTitle) {
+      this.alertTitle.textContent = 'AI-DE-RISK ACTIVATED:';
+    }
+    if (this.alertMessage) {
+      this.alertMessage.textContent = 'Sewing phase 22% behind schedule.';
+    }
+
+    // Reset buttons
+    if (this.alertButton) {
+      this.alertButton.classList.remove('is-clicked');
+    }
+    if (this.approveBtn) {
+      this.approveBtn.classList.remove('is-clicked');
+    }
+
+    // Reset solution panel
+    if (this.solutionPanel) {
+      this.solutionPanel.classList.remove('is-visible');
+    }
+  }
+
+  wait(duration) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, duration);
+    });
+  }
+}
+
 // Store animation instances for restart functionality
 window.demoInstances = {};
 
@@ -1036,4 +1338,9 @@ if (stepTwoScreen) {
 const stepThreeScreen = document.querySelector('.mockup-screen[data-step="step-3"]');
 if (stepThreeScreen) {
   window.demoInstances['step-3'] = new StepThreeAutoDemo(stepThreeScreen);
+}
+
+const stepFourScreen = document.querySelector('.mockup-screen[data-step="step-4"]');
+if (stepFourScreen) {
+  window.demoInstances['step-4'] = new StepFourAutoDemo(stepFourScreen);
 }
