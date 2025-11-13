@@ -385,69 +385,56 @@
                     </div>
                   </div>
                   <div class="mockup-screen" data-step="step-3">
-                    <div class="screen-head">
+                    <div class="screen-head step-three-head">
                       <div>
                         <p class="screen-kicker">Live production</p>
                         <h4>Project: Spring '26 Hoodie</h4>
+                        <small>Factory A-007 · Line 3</small>
                       </div>
-                      <span class="badge badge-success">On track</span>
+                      <span class="status-chip status-positive" data-status-chip>On track</span>
                     </div>
-                    <div class="milestone-track">
-                      <div class="milestone complete">
-                        <span>✓</span>
-                        Knitting
-                      </div>
-                      <div class="milestone active">
-                        <span>•••</span>
-                        Cut &amp; sew
-                      </div>
-                      <div class="milestone pending">QC</div>
-                      <div class="milestone pending">Pack</div>
+                    <div class="step-three-grid">
+                      <section class="production-card">
+                        <div class="production-meta">
+                          <span class="production-label">Stage status</span>
+                          <strong data-stage-label>Cutting in progress</strong>
+                        </div>
+                        <div class="timeline-bar" role="img" aria-label="Production progress">
+                          <div class="timeline-fill" data-progress-fill style="width: 0%"></div>
+                        </div>
+                        <div class="timeline-stats">
+                          <span class="timeline-current" data-progress-label>0%</span>
+                        </div>
+                        <div class="milestone-row">
+                          <span class="milestone-chip is-active" data-milestone="cutting">Cutting</span>
+                          <span class="milestone-chip is-pending" data-milestone="sewing">Sewing</span>
+                          <span class="milestone-chip is-pending" data-milestone="qc">QC</span>
+                          <span class="milestone-chip is-pending" data-milestone="finishing">Finishing</span>
+                        </div>
+                      </section>
+                      <aside class="qc-panel">
+                        <header>
+                          <h5>QC feed</h5>
+                          <small>Live floor uploads</small>
+                        </header>
+                        <div class="qc-feed" data-qc-feed>
+                          <div class="qc-empty" data-qc-empty>Awaiting new uploads</div>
+                        </div>
+                      </aside>
                     </div>
-                    <div class="screen-grid">
-                      <div class="qc-card">
-                        <header>
-                          <h5>Live QC photos</h5>
-                          <small>Updated 3 mins ago</small>
-                        </header>
-                        <div class="qc-photos">
-                          <figure>
-                            <div class="qc-thumb"></div>
-                            <figcaption>Panel stitch · 08:42</figcaption>
-                          </figure>
-                          <figure>
-                            <div class="qc-thumb"></div>
-                            <figcaption>Drawcord QC · 08:37</figcaption>
-                          </figure>
-                          <figure>
-                            <div class="qc-thumb"></div>
-                            <figcaption>Pocket seam · 08:35</figcaption>
-                          </figure>
-                        </div>
-                      </div>
-                      <div class="map-card">
-                        <header>
-                          <h5>Factory A location</h5>
-                          <small>Ho Chi Minh City</small>
-                        </header>
-                        <div class="map-visual">
-                          <span class="ping"></span>
-                        </div>
-                        <ul class="stat-list">
-                          <li>
-                            <span>Units complete</span>
-                            <strong>14,200 / 25,000</strong>
-                          </li>
-                          <li>
-                            <span>Shift status</span>
-                            <strong>Line 3 · Running</strong>
-                          </li>
-                          <li>
-                            <span>On-time confidence</span>
-                            <strong>96%</strong>
-                          </li>
-                        </ul>
-                      </div>
+                    <div class="metric-grid">
+                      <article class="metric-card">
+                        <span>Units complete</span>
+                        <strong data-units-count>0 / 25,000</strong>
+                      </article>
+                      <article class="metric-card">
+                        <span>On-time confidence</span>
+                        <strong class="metric-positive" data-confidence>100%</strong>
+                      </article>
+                      <article class="metric-card">
+                        <span>Shift</span>
+                        <strong>Line 3 · Running</strong>
+                      </article>
                     </div>
                   </div>
                   <div class="mockup-screen" data-step="step-4">

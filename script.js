@@ -708,6 +708,318 @@ class StepTwoAutoDemo {
   }
 }
 
+class StepThreeAutoDemo {
+  constructor(root) {
+    this.root = root;
+    this.progressFill = root.querySelector('[data-progress-fill]');
+    this.progressLabel = root.querySelector('[data-progress-label]');
+    this.unitsEl = root.querySelector('[data-units-count]');
+    this.confidenceEl = root.querySelector('[data-confidence]');
+    this.stageLabel = root.querySelector('[data-stage-label]');
+    this.statusChip = root.querySelector('[data-status-chip]');
+    this.qcFeed = root.querySelector('[data-qc-feed]');
+    this.qcEmpty = root.querySelector('[data-qc-empty]');
+    this.milestones = {
+      cutting: root.querySelector('[data-milestone="cutting"]'),
+      sewing: root.querySelector('[data-milestone="sewing"]'),
+      qc: root.querySelector('[data-milestone="qc"]'),
+      finishing: root.querySelector('[data-milestone="finishing"]'),
+    };
+    this.sequenceRunning = false;
+    this.inView = false;
+    this.runId = 0;
+    this.holdDuration = 4000;
+    this.prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (this.prefersReducedMotion) return;
+
+    this.root.classList.add('auto-demo');
+    this.resetState();
+
+    if ('IntersectionObserver' in window) {
+      this.observer = new IntersectionObserver(this.handleIntersect.bind(this), {
+        threshold: 0.45,
+      });
+      this.observer.observe(this.root);
+    } else {
+      this.inView = true;
+      this.start();
+    }
+  }
+
+  handleIntersect(entries) {
+    const [entry] = entries;
+    if (!entry) return;
+    if (entry.isIntersecting) {
+      this.inView = true;
+      this.start();
+    } else {
+      this.inView = false;
+    }
+  }
+
+  start() {
+    if (this.sequenceRunning || !this.inView) return;
+    this.sequenceRunning = true;
+    this.runLoop();
+  }
+
+  async restart() {
+    this.runId += 1;
+    this.inView = false;
+    this.sequenceRunning = false;
+    this.root.classList.add('is-resetting');
+    this.resetState();
+    await this.wait(50);
+    this.root.classList.remove('is-resetting');
+    await this.wait(50);
+    this.inView = true;
+    this.start();
+  }
+
+  async runLoop() {
+    const currentRunId = this.runId;
+    this.resetState();
+    await this.wait(300);
+    if (!this.inView || this.runId !== currentRunId) {
+      this.sequenceRunning = false;
+      return;
+    }
+
+    while (this.inView && this.runId === currentRunId) {
+      await this.playOnce(currentRunId);
+      if (!this.inView || this.runId !== currentRunId) break;
+    }
+
+    this.sequenceRunning = false;
+  }
+
+  async fadeToInitial() {
+    this.root.classList.add('is-resetting');
+    await this.wait(420);
+    this.resetState();
+    this.root.classList.remove('is-resetting');
+    await this.wait(180);
+  }
+
+  async playOnce(currentRunId) {
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.phaseCutting(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(1000);
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.phaseSewing(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.wait(this.holdDuration);
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.fadeToInitial();
+  }
+
+  async phaseCutting(currentRunId) {
+    this.setMilestoneState('cutting', 'active');
+    this.setMilestoneState('sewing', 'pending');
+    this.setMilestoneState('qc', 'pending');
+    this.setMilestoneState('finishing', 'pending');
+    if (this.stageLabel) {
+      this.stageLabel.textContent = 'Cutting in progress';
+    }
+
+    const tasks = [
+      this.animateProgress(0, 25, 2000, currentRunId),
+      this.animateUnits(0, 4000, 2000, currentRunId),
+      this.scheduleQcCard(
+        {
+          title: 'Panel cutting - 08:15',
+          detail: 'Batch 12 · Floor cam',
+          gradient: 'linear-gradient(135deg, rgba(110, 167, 255, 0.35), rgba(60, 107, 255, 0.6))',
+        },
+        900,
+        currentRunId
+      ),
+    ];
+    await Promise.all(tasks);
+
+    this.setMilestoneState('cutting', 'complete');
+    this.setMilestoneState('sewing', 'active');
+    if (this.stageLabel) {
+      this.stageLabel.textContent = 'Cutting complete';
+    }
+  }
+
+  async phaseSewing(currentRunId) {
+    if (this.stageLabel) {
+      this.stageLabel.textContent = 'Sewing in progress';
+    }
+
+    const tasks = [
+      this.animateProgress(25, 40, 2000, currentRunId),
+      this.animateUnits(4000, 8100, 2000, currentRunId),
+      this.animateConfidence(100, 98, 2000, currentRunId),
+      this.scheduleQcCard(
+        {
+          title: 'Collar stitching - 10:30',
+          detail: 'Needle tension check',
+          gradient: 'linear-gradient(135deg, rgba(72, 214, 173, 0.35), rgba(23, 132, 87, 0.65))',
+        },
+        1000,
+        currentRunId
+      ),
+    ];
+    await Promise.all(tasks);
+
+    this.setMilestoneState('sewing', 'active');
+    this.setMilestoneState('qc', 'pending');
+    this.setMilestoneState('finishing', 'pending');
+  }
+
+  setMilestoneState(key, state) {
+    const el = this.milestones[key];
+    if (!el) return;
+    el.classList.remove('is-active', 'is-complete', 'is-pending');
+    if (state === 'active') {
+      el.classList.add('is-active');
+    } else if (state === 'complete') {
+      el.classList.add('is-complete');
+    } else {
+      el.classList.add('is-pending');
+    }
+  }
+
+  async scheduleQcCard(card, delay, currentRunId) {
+    await this.wait(delay);
+    if (!this.inView || this.runId !== currentRunId) return;
+    this.addQcCard(card);
+  }
+
+  addQcCard({ title, detail, gradient }) {
+    if (!this.qcFeed) return;
+
+    if (this.qcEmpty) {
+      this.qcEmpty.classList.add('is-hidden');
+    }
+
+    const entry = document.createElement('article');
+    entry.className = 'qc-entry';
+
+    const photo = document.createElement('div');
+    photo.className = 'qc-photo';
+    if (gradient) {
+      photo.style.setProperty('--qc-gradient', gradient);
+    }
+
+    const copy = document.createElement('div');
+    const heading = document.createElement('h6');
+    heading.textContent = title;
+    const detailEl = document.createElement('p');
+    detailEl.textContent = detail || 'Live floor update';
+
+    copy.appendChild(heading);
+    copy.appendChild(detailEl);
+
+    entry.appendChild(photo);
+    entry.appendChild(copy);
+
+    this.qcFeed.appendChild(entry);
+
+    requestAnimationFrame(() => {
+      entry.classList.add('is-visible');
+    });
+  }
+
+  clearQcFeed() {
+    if (!this.qcFeed) return;
+    this.qcFeed.querySelectorAll('.qc-entry').forEach((entry) => entry.remove());
+    if (this.qcEmpty) {
+      this.qcEmpty.classList.remove('is-hidden');
+    }
+  }
+
+  animateProgress(start, end, duration, currentRunId) {
+    if (!this.progressFill) return Promise.resolve();
+    return this.animateBetween(start, end, duration, (value) => {
+      this.progressFill.style.width = `${value}%`;
+      if (this.progressLabel) {
+        this.progressLabel.textContent = `${Math.round(value)}%`;
+      }
+    }, currentRunId);
+  }
+
+  animateUnits(start, end, duration, currentRunId) {
+    if (!this.unitsEl) return Promise.resolve();
+    return this.animateBetween(start, end, duration, (value) => {
+      const rounded = Math.round(value);
+      this.unitsEl.textContent = `${this.formatNumber(rounded)} / 25,000`;
+    }, currentRunId);
+  }
+
+  animateConfidence(start, end, duration, currentRunId) {
+    if (!this.confidenceEl) return Promise.resolve();
+    return this.animateBetween(start, end, duration, (value) => {
+      this.confidenceEl.textContent = `${Math.round(value)}%`;
+    }, currentRunId);
+  }
+
+  animateBetween(start, end, duration, onUpdate, currentRunId) {
+    return new Promise((resolve) => {
+      const startTime = performance.now();
+      const frame = (now) => {
+        if (!this.inView || this.runId !== currentRunId) {
+          resolve();
+          return;
+        }
+        const progress = Math.min((now - startTime) / duration, 1);
+        const value = start + (end - start) * progress;
+        onUpdate(value);
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          resolve();
+        }
+      };
+      requestAnimationFrame(frame);
+    });
+  }
+
+  formatNumber(value) {
+    return new Intl.NumberFormat('en-US').format(value);
+  }
+
+  resetState() {
+    if (this.progressFill) {
+      this.progressFill.style.width = '0%';
+    }
+    if (this.progressLabel) {
+      this.progressLabel.textContent = '0%';
+    }
+    if (this.unitsEl) {
+      this.unitsEl.textContent = '0 / 25,000';
+    }
+    if (this.confidenceEl) {
+      this.confidenceEl.textContent = '100%';
+    }
+    if (this.stageLabel) {
+      this.stageLabel.textContent = 'Cutting in progress';
+    }
+    Object.keys(this.milestones).forEach((key) => {
+      if (key === 'cutting') {
+        this.setMilestoneState(key, 'active');
+      } else {
+        this.setMilestoneState(key, 'pending');
+      }
+    });
+    if (this.statusChip) {
+      this.statusChip.textContent = 'On track';
+    }
+    this.clearQcFeed();
+  }
+
+  wait(duration) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, duration);
+    });
+  }
+}
+
 // Store animation instances for restart functionality
 window.demoInstances = {};
 
@@ -719,4 +1031,9 @@ if (stepOneScreen) {
 const stepTwoScreen = document.querySelector('.mockup-screen[data-step="step-2"]');
 if (stepTwoScreen) {
   window.demoInstances['step-2'] = new StepTwoAutoDemo(stepTwoScreen);
+}
+
+const stepThreeScreen = document.querySelector('.mockup-screen[data-step="step-3"]');
+if (stepThreeScreen) {
+  window.demoInstances['step-3'] = new StepThreeAutoDemo(stepThreeScreen);
 }
