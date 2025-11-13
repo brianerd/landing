@@ -136,8 +136,22 @@ h1 {
 
 .gradient-text {
   background: var(--gradient);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   color: transparent;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .lead {
