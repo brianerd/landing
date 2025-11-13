@@ -2516,47 +2516,94 @@ section {
 }
 
 .request {
-  background: linear-gradient(180deg, #ffffff 0%, #f5f3ee 100%);
+  background: linear-gradient(180deg, #fafbfc 0%, #f0f2f5 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.request::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(27, 102, 255, 0.2), transparent);
+}
+
+.request h2 {
+  background: linear-gradient(135deg, #0a0f1e 0%, #1a2544 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .request-lead {
-  max-width: 600px;
+  max-width: 640px;
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: rgba(18, 18, 18, 0.75);
 }
 
 .request-lead strong {
   font-weight: 600;
+  color: #0a0f1e;
 }
 
 .request-form {
-  margin-top: 2rem;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 36px;
-  padding: clamp(1.75rem, 4vw, 2.5rem);
-  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.08);
-  background: #ffffff;
+  margin-top: 2.5rem;
+  border: 1.5px solid rgba(8, 15, 40, 0.08);
+  border-radius: 40px;
+  padding: clamp(2rem, 4vw, 3rem);
+  box-shadow: 0 8px 24px rgba(8, 15, 40, 0.04), 0 30px 80px rgba(8, 15, 40, 0.08);
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.request-form::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(27, 102, 255, 0.08), transparent, rgba(27, 102, 255, 0.08));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .request-form-head {
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.85rem;
-  color: var(--muted);
-  margin-bottom: 1.5rem;
+  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  color: rgba(108, 115, 125, 0.7);
+  margin-bottom: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.request-form-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(108, 115, 125, 0.15), transparent);
 }
 
 .form-grid.request-fields {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
 }
 
 .request-fields label {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 22px;
-  padding: 1rem 1.1rem;
-  background: linear-gradient(135deg, #ffffff, #f7f5f0);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .request-fields label.full {
@@ -2566,31 +2613,62 @@ section {
 .form-grid label {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
   font-weight: 600;
-  color: var(--text);
+  font-size: 0.95rem;
+  color: #0a0f1e;
 }
 
 input,
 select,
 textarea {
-  border-radius: 14px;
-  border: 1px solid var(--border);
-  padding: 0.75rem 1rem;
+  border-radius: 16px;
+  border: 1.5px solid rgba(8, 15, 40, 0.1);
+  padding: 0.95rem 1.2rem;
   font-size: 1rem;
   font-family: inherit;
   background: #fff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: #0a0f1e;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(27, 102, 255, 0.4);
+  box-shadow: 0 0 0 4px rgba(27, 102, 255, 0.08);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(108, 115, 125, 0.5);
 }
 
 textarea {
   resize: vertical;
+  min-height: 120px;
 }
 
 .request-form .btn {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   width: 100%;
-  font-size: 1.05rem;
-  padding: 1.15rem;
+  font-size: 1.08rem;
+  padding: 1.3rem 2rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #0a0f1e 0%, #1a2544 100%);
+  box-shadow: 0 4px 14px rgba(10, 15, 30, 0.2), 0 12px 32px rgba(10, 15, 30, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.request-form .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(10, 15, 30, 0.25), 0 18px 48px rgba(10, 15, 30, 0.2);
+}
+
+.request-form .btn:active {
+  transform: translateY(0);
 }
 
 .optional {
@@ -2664,8 +2742,10 @@ textarea {
   .product-head {
     flex-direction: column;
   }
-  .request-form .btn {
-    width: auto;
+
+  .form-grid.request-fields {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
