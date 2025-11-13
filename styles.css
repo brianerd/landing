@@ -299,31 +299,50 @@ section {
 
 .trust-points li {
   display: flex;
-  gap: 1rem;
-  padding: 1.4rem 1.6rem;
-  border-radius: 28px;
-  border: 1px solid var(--border);
-  background: #fff;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  gap: 1.2rem;
+  padding: 1.75rem 1.9rem;
+  border-radius: 32px;
+  border: 1.5px solid rgba(8, 15, 40, 0.06);
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  box-shadow: 0 4px 14px rgba(8, 15, 40, 0.04), 0 20px 60px rgba(8, 15, 40, 0.06);
   align-items: flex-start;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.trust-points li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(8, 15, 40, 0.08), 0 30px 70px rgba(8, 15, 40, 0.1);
+  border-color: rgba(27, 102, 255, 0.15);
 }
 
 .trust-icon {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   line-height: 1;
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(5, 150, 105, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
 }
 
 .trust-points strong {
   display: block;
-  font-size: 1.05rem;
-  margin-bottom: 0.35rem;
+  font-size: 1.1rem;
+  margin-bottom: 0.45rem;
+  letter-spacing: -0.01em;
+  color: #0a0f1e;
 }
 
 .trust-points p {
   margin: 0;
   color: var(--muted);
-  line-height: 1.55;
+  line-height: 1.6;
+  font-size: 0.98rem;
 }
 
 .trust-dossiers {
@@ -335,11 +354,11 @@ section {
 .dossier-card {
   position: absolute;
   inset: 0;
-  border-radius: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  background: #fff;
-  padding: 1.75rem;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.12);
+  border-radius: 36px;
+  border: 1.5px solid rgba(8, 15, 40, 0.06);
+  background: linear-gradient(145deg, #ffffff 0%, #fafbfc 100%);
+  padding: 2rem 2.2rem;
+  box-shadow: 0 8px 24px rgba(8, 15, 40, 0.06), 0 30px 80px rgba(8, 15, 40, 0.08);
   opacity: 0;
   transform: translateY(35px) scale(0.98);
   animation: dossierCycle 16s ease-in-out infinite;
@@ -350,59 +369,86 @@ section {
 .dossier-head {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.4rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1.5px solid rgba(8, 15, 40, 0.06);
 }
 
 .dossier-label {
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin: 0;
+  letter-spacing: 0.2em;
+  font-size: 0.72rem;
+  color: rgba(108, 115, 125, 0.8);
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+.dossier-card h3 {
+  font-size: 1.35rem;
+  margin: 0.3rem 0 0;
+  letter-spacing: -0.02em;
+  color: #0a0f1e;
+  font-weight: 700;
 }
 
 .dossier-status {
   border-radius: 999px;
-  padding: 0.3rem 0.95rem;
-  font-size: 0.85rem;
+  padding: 0.4rem 1.1rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  background: rgba(18, 122, 58, 0.12);
-  color: #127a3a;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.18));
+  color: #0a7a4d;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.15);
 }
 
 .dossier-status--amber {
-  background: rgba(255, 193, 7, 0.18);
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.16), rgba(245, 158, 11, 0.2));
   color: #a66800;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.15);
+  border-color: rgba(255, 193, 7, 0.2);
 }
 
 .dossier-status--green {
-  background: rgba(33, 150, 83, 0.14);
-  color: #0e6f45;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.18));
+  color: #0a7a4d;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.15);
 }
 
 .dossier-details {
   list-style: none;
-  margin: 1.5rem 0 0;
+  margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.3rem;
+}
+
+.dossier-details li {
+  background: linear-gradient(135deg, rgba(8, 15, 40, 0.02), rgba(8, 15, 40, 0.04));
+  border-radius: 16px;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid rgba(8, 15, 40, 0.05);
 }
 
 .dossier-details li span {
   display: inline-block;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.75rem;
-  color: var(--muted);
+  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  color: rgba(108, 115, 125, 0.85);
+  font-weight: 600;
 }
 
 .dossier-details li strong {
   display: block;
-  margin-top: 0.2rem;
-  font-size: 1.05rem;
+  margin-top: 0.4rem;
+  font-size: 1.08rem;
+  letter-spacing: -0.01em;
+  color: #0a0f1e;
 }
 
 @keyframes dossierCycle {
