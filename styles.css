@@ -1641,6 +1641,21 @@ section {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+.mockup-screen[data-step="step-2"].auto-demo.is-resetting .factory-entry {
+  opacity: 0 !important;
+  transform: translateX(20px) !important;
+  transition: none !important;
+}
+
+.mockup-screen[data-step="step-2"].auto-demo.is-resetting .ai-hint {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+.mockup-screen[data-step="step-2"].auto-demo.is-resetting .flag-count {
+  transition: none !important;
+}
+
 .mockup-screen[data-step="step-2"].auto-demo .ai-hint {
   opacity: 0;
   transform: translateY(5px);

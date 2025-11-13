@@ -25,6 +25,11 @@ if (workflow) {
     if (block) block.classList.add('active');
     currentIndex = index;
     updateNavPills(index);
+
+    // Restart animation for the active step
+    if (window.demoInstances && window.demoInstances[panelId]) {
+      window.demoInstances[panelId].restart();
+    }
   };
 
   steps.forEach((step, index) => {
@@ -67,6 +72,7 @@ class StepOneAutoDemo {
     this.loopPause = 4000;
     this.sequenceRunning = false;
     this.inView = false;
+    this.runId = 0;
     this.prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (this.prefersReducedMotion) return;
@@ -113,25 +119,39 @@ class StepOneAutoDemo {
     this.runLoop();
   }
 
+  async restart() {
+    this.runId += 1;
+    this.inView = false;
+    this.sequenceRunning = false;
+    this.root.classList.add('is-resetting');
+    this.resetState();
+    await this.wait(50);
+    this.root.classList.remove('is-resetting');
+    await this.wait(50);
+    this.inView = true;
+    this.start();
+  }
+
   async runLoop() {
+    const currentRunId = this.runId;
     this.resetState();
     await this.wait(300);
-    if (!this.inView) {
+    if (!this.inView || this.runId !== currentRunId) {
       this.sequenceRunning = false;
       this.resetState();
       return;
     }
 
-    while (this.inView) {
-      await this.playOnce();
-      if (!this.inView) break;
+    while (this.inView && this.runId === currentRunId) {
+      await this.playOnce(currentRunId);
+      if (!this.inView || this.runId !== currentRunId) break;
       await this.wait(this.loopPause);
-      if (!this.inView) break;
+      if (!this.inView || this.runId !== currentRunId) break;
       await this.fadeToInitial();
     }
 
     this.sequenceRunning = false;
-    if (!this.inView) {
+    if (!this.inView || this.runId !== currentRunId) {
       this.resetState();
     }
   }
@@ -144,46 +164,46 @@ class StepOneAutoDemo {
     await this.wait(180);
   }
 
-  async playOnce() {
-    if (!this.inView) return;
-    await this.handleOrderInputs();
-    if (!this.inView) return;
+  async playOnce(currentRunId) {
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.handleOrderInputs(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(200);
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.simulateUpload();
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(150);
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.simulateButtonClick();
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.revealAiPanel();
-    if (!this.inView) return;
-    await this.runAiParse();
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.runAiParse(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.fillScore();
   }
 
-  async handleOrderInputs() {
-    await this.typeOrderField('product-name', 800);
-    if (!this.inView) return;
+  async handleOrderInputs(currentRunId) {
+    await this.typeOrderField('product-name', 800, currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(100);
-    if (!this.inView) return;
-    await this.typeOrderField('quantity', 600);
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.typeOrderField('quantity', 600, currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(100);
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.simulateDateSelection(1000);
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(100);
-    if (!this.inView) return;
-    await this.typeOrderField('price', 600);
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.typeOrderField('price', 600, currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(100);
-    if (!this.inView) return;
-    await this.typeOrderField('description', 1200);
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.typeOrderField('description', 1200, currentRunId);
   }
 
-  async typeOrderField(key, duration = 900) {
+  async typeOrderField(key, duration = 900, currentRunId) {
     const field = this.orderFields[key];
     if (!field || !field.textEl || !field.value) return;
     field.el.classList.add('is-typing');
@@ -194,10 +214,11 @@ class StepOneAutoDemo {
     const interval = Math.max(duration / chars.length, 35);
 
     for (let i = 0; i < chars.length; i += 1) {
+      if (!this.inView || this.runId !== currentRunId) return;
       field.textEl.textContent = field.value.slice(0, i + 1);
       if (i < chars.length - 1) {
         await this.wait(interval);
-        if (!this.inView) return;
+        if (!this.inView || this.runId !== currentRunId) return;
       }
     }
 
@@ -279,15 +300,15 @@ class StepOneAutoDemo {
     }
   }
 
-  async runAiParse() {
+  async runAiParse(currentRunId) {
     if (this.parseStatus) {
       this.parseStatus.textContent = 'AI PARSING...';
       this.parseStatus.classList.add('is-active');
     }
 
     for (const field of this.aiFields) {
-      await this.typeAiField(field, 700);
-      if (!this.inView) return;
+      await this.typeAiField(field, 700, currentRunId);
+      if (!this.inView || this.runId !== currentRunId) return;
     }
 
     if (this.parseStatus) {
@@ -296,7 +317,7 @@ class StepOneAutoDemo {
     }
   }
 
-  async typeAiField(field, duration = 700) {
+  async typeAiField(field, duration = 700, currentRunId) {
     if (!field?.valueEl || !field.value) return;
     field.el.classList.add('is-active');
     field.el.classList.remove('is-filled');
@@ -306,10 +327,11 @@ class StepOneAutoDemo {
     const interval = Math.max(duration / chars.length, 35);
 
     for (let i = 0; i < chars.length; i += 1) {
+      if (!this.inView || this.runId !== currentRunId) return;
       field.valueEl.textContent = field.value.slice(0, i + 1);
       if (i < chars.length - 1) {
         await this.wait(interval);
-        if (!this.inView) return;
+        if (!this.inView || this.runId !== currentRunId) return;
       }
     }
 
@@ -430,6 +452,7 @@ class StepTwoAutoDemo {
     this.loopPause = 3000;
     this.sequenceRunning = false;
     this.inView = false;
+    this.runId = 0;
     this.prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (this.prefersReducedMotion) return;
@@ -465,25 +488,39 @@ class StepTwoAutoDemo {
     this.runLoop();
   }
 
+  async restart() {
+    this.runId += 1;
+    this.inView = false;
+    this.sequenceRunning = false;
+    this.root.classList.add('is-resetting');
+    this.resetState();
+    await this.wait(50);
+    this.root.classList.remove('is-resetting');
+    await this.wait(50);
+    this.inView = true;
+    this.start();
+  }
+
   async runLoop() {
+    const currentRunId = this.runId;
     this.resetState();
     await this.wait(300);
-    if (!this.inView) {
+    if (!this.inView || this.runId !== currentRunId) {
       this.sequenceRunning = false;
       this.resetState();
       return;
     }
 
-    while (this.inView) {
-      await this.playOnce();
-      if (!this.inView) break;
+    while (this.inView && this.runId === currentRunId) {
+      await this.playOnce(currentRunId);
+      if (!this.inView || this.runId !== currentRunId) break;
       await this.wait(this.loopPause);
-      if (!this.inView) break;
+      if (!this.inView || this.runId !== currentRunId) break;
       await this.fadeToInitial();
     }
 
     this.sequenceRunning = false;
-    if (!this.inView) {
+    if (!this.inView || this.runId !== currentRunId) {
       this.resetState();
     }
   }
@@ -496,31 +533,31 @@ class StepTwoAutoDemo {
     await this.wait(180);
   }
 
-  async playOnce() {
+  async playOnce(currentRunId) {
     // Step A: Animate Regional Data (1s)
-    if (!this.inView) return;
-    await this.animateRegionalData();
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.animateRegionalData(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(300);
 
     // Step B: Reveal Factory Cards (2s)
-    if (!this.inView) return;
-    await this.revealFactoryCards();
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.revealFactoryCards(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(300);
 
     // Step C: Reveal AI Hints (1s)
-    if (!this.inView) return;
-    await this.revealAiHints();
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
+    await this.revealAiHints(currentRunId);
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.wait(300);
 
     // Step D: Simulate Selection (1s)
-    if (!this.inView) return;
+    if (!this.inView || this.runId !== currentRunId) return;
     await this.simulateSelection();
   }
 
-  async animateRegionalData() {
+  async animateRegionalData(currentRunId) {
     const duration = 1000;
     const steps = 30;
     const stepDuration = duration / steps;
@@ -530,7 +567,7 @@ class StepTwoAutoDemo {
     });
 
     for (let i = 1; i <= steps; i += 1) {
-      if (!this.inView) return;
+      if (!this.inView || this.runId !== currentRunId) return;
       this.flagCounters.forEach(({ counterEl, targetValue }) => {
         if (!counterEl) return;
         const value = Math.round((targetValue / steps) * i);
@@ -546,15 +583,15 @@ class StepTwoAutoDemo {
     });
   }
 
-  async revealFactoryCards() {
+  async revealFactoryCards(currentRunId) {
     const cardDelay = 600;
     const countDuration = 1000;
 
     for (const factory of this.factoryData) {
-      if (!this.inView) return;
+      if (!this.inView || this.runId !== currentRunId) return;
 
       factory.el.classList.add('is-revealing');
-      await this.animateFactoryScore(factory, countDuration);
+      await this.animateFactoryScore(factory, countDuration, currentRunId);
       factory.el.classList.remove('is-revealing');
       factory.el.classList.add('is-visible');
 
@@ -562,11 +599,11 @@ class StepTwoAutoDemo {
     }
   }
 
-  async revealAiHints() {
+  async revealAiHints(currentRunId) {
     const hintDelay = 400;
 
     for (const factory of this.factoryData) {
-      if (!this.inView) return;
+      if (!this.inView || this.runId !== currentRunId) return;
       if (!factory.aiHint) continue;
 
       factory.aiHint.classList.add('is-revealing');
@@ -581,14 +618,14 @@ class StepTwoAutoDemo {
     }
   }
 
-  async animateFactoryScore(factory, duration) {
+  async animateFactoryScore(factory, duration, currentRunId) {
     if (!factory.scoreEl) return;
 
     const steps = 25;
     const stepDuration = duration / steps;
 
     for (let i = 1; i <= steps; i += 1) {
-      if (!this.inView) return;
+      if (!this.inView || this.runId !== currentRunId) return;
       const value = Math.round((factory.targetScore / steps) * i);
       factory.scoreEl.textContent = `${value}%`;
       await this.wait(stepDuration);
@@ -671,12 +708,15 @@ class StepTwoAutoDemo {
   }
 }
 
+// Store animation instances for restart functionality
+window.demoInstances = {};
+
 const stepOneScreen = document.querySelector('.mockup-screen[data-step="step-1"]');
 if (stepOneScreen) {
-  new StepOneAutoDemo(stepOneScreen);
+  window.demoInstances['step-1'] = new StepOneAutoDemo(stepOneScreen);
 }
 
 const stepTwoScreen = document.querySelector('.mockup-screen[data-step="step-2"]');
 if (stepTwoScreen) {
-  new StepTwoAutoDemo(stepTwoScreen);
+  window.demoInstances['step-2'] = new StepTwoAutoDemo(stepTwoScreen);
 }
