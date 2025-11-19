@@ -2671,6 +2671,21 @@ textarea {
   transform: translateY(0);
 }
 
+.form-status {
+  margin: 1rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: rgba(108, 115, 125, 0.9);
+}
+
+.form-status[data-status-variant='success'] {
+  color: #1b7a4d;
+}
+
+.form-status[data-status-variant='error'] {
+  color: #b03131;
+}
+
 .optional {
   font-weight: 400;
   font-size: 0.85rem;

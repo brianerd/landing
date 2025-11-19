@@ -1347,3 +1347,41 @@ const stepFourScreen = document.querySelector('.mockup-screen[data-step="step-4"
 if (stepFourScreen) {
   window.demoInstances['step-4'] = new StepFourAutoDemo(stepFourScreen);
 }
+
+const waitlistForm = document.querySelector('[data-formspree]');
+if (waitlistForm) {
+  const statusEl = waitlistForm.querySelector('[data-form-status]');
+  const submitBtn = waitlistForm.querySelector('button[type="submit"]');
+
+  const setStatus = (message, variant = 'neutral') => {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.dataset.statusVariant = variant;
+  };
+
+  waitlistForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const formData = new FormData(waitlistForm);
+    submitBtn.disabled = true;
+    setStatus('Sending…');
+
+    try {
+      const response = await fetch(waitlistForm.action, {
+        method: waitlistForm.method,
+        body: formData,
+        headers: { Accept: 'application/json' },
+      });
+
+      if (!response.ok) {
+        throw new Error('Request failed');
+      }
+
+      waitlistForm.reset();
+      setStatus('Thanks! We added you to the waitlist.', 'success');
+    } catch (error) {
+      setStatus('Something went wrong—please try again or email us.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+}
